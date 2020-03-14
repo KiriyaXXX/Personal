@@ -1,0 +1,61 @@
+
+# Drop tables from previous exercises
+
+DROP TABLE IF EXISTS Track;
+DROP TABLE IF EXISTS CD;
+DROP TABLE IF EXISTS Artist;
+
+# Create new tables
+
+CREATE TABLE Artist (
+       artID INT NOT NULL AUTO_INCREMENT,
+       artName VARCHAR(255) NOT NULL,
+       CONSTRAINT pk_artist PRIMARY KEY (artID),
+       CONSTRAINT ck_artist UNIQUE (artName)	
+);
+	
+CREATE TABLE CD (
+       cdID INT NOT NULL AUTO_INCREMENT,
+       artID INT NOT NULL,
+       cdTitle VARCHAR(255) NOT NULL,
+       cdPrice REAL NOT NULL,
+       cdGenre VARCHAR(255) NULL,
+	   cdNumTracks INT NULL,
+       CONSTRAINT pk_cd PRIMARY KEY (cdID),
+       CONSTRAINT fk_cd_art FOREIGN KEY (artID) REFERENCES Artist (artID)
+);
+
+# Fill the tables up
+
+# Artist
+
+INSERT INTO Artist (artName) 
+VALUES 	('Muse'),
+		('Mr. Scruff'),
+		('DeadMau5'),
+		('Mark Ronson'),
+		('Mark Ronson & The Business Intl'),
+       	('Animal Collective'),
+		('Kings of Leon'),
+		('Maroon 5');
+
+# CD
+
+INSERT INTO CD (artID, cdTitle, cdGenre, cdPrice) VALUES
+((SELECT artID from Artist WHERE artName = 'Muse'), 'Black Holes and Revelations', 'Rock', 9.99),
+((SELECT artID from Artist WHERE artName = 'Muse'), 'The Resistance', 'Rock', 11.99),
+((SELECT artID from Artist WHERE artName = 'Mr. Scruff'), 'Ninja Tuna', 'Electronica', 9.99),
+((SELECT artID from Artist WHERE artName = 'Deadmau5'), 'For Lack of a Better Name', 'Electro House', 9.99),
+((SELECT artID from Artist WHERE artName = 'Mark Ronson'), 'Version', 'Pop', 12.99),
+((SELECT artID from Artist WHERE artName = 'Mark Ronson & The Business Intl'), 'Record Collection', 'Alternative Rock', 11.99),
+((SELECT artID from Artist WHERE artName = 'Animal Collective'), 'Merriweather Post Pavilion', 'Electronica', 12.99),
+((SELECT artID from Artist WHERE artName = 'Kings of Leon'), 'Only By The Night', 'Rock', 9.99),
+((SELECT artID from Artist WHERE artName = 'Kings of Leon'), 'Come Around Sundown', 'Rock', 12.99),
+((SELECT artID from Artist WHERE artName = 'Maroon 5'), 'Hands All Over', 'Pop', 11.99);
+
+
+# Check what's inside each table
+
+SELECT * FROM Artist;
+
+SELECT * FROM CD;
